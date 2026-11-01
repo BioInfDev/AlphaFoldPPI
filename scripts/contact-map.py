@@ -1,26 +1,26 @@
 #!/usr/bin/env python3
+import argparse
 from collections import defaultdict
 from pathlib import Path
 
-import argparse
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
-from sklearn.cluster import DBSCAN
-from scipy.spatial.distance import cdist
 from Bio.PDB import MMCIFParser
+from scipy.spatial.distance import cdist
+from sklearn.cluster import DBSCAN
 
 
 p = argparse.ArgumentParser()
-p.add_argument('file', type = Path)
-p.add_argument('-c1', '--chain-a', type = str, default = 'A')
-p.add_argument('-c2', '--chain-b', type = str, default = 'B')
-p.add_argument('-t', '--threshold', type = float, default = 8.0)
+p.add_argument('cif', type=Path)
+p.add_argument('-c1', '--chain-a', type=str, default='A')
+p.add_argument('-c2', '--chain-b', type=str, default='B')
+p.add_argument('-t', '--threshold', type=float, default=8.0)
 args = p.parse_args()
 
 # Read CIF
 parser = MMCIFParser(QUIET=True)
-structure = parser.get_structure('AF-COMPLEX', Path(args.file).resolve())
+structure = parser.get_structure('AF-COMPLEX', Path(args.cif).resolve())
 
 # Selection of model and chains
 model = structure[0]

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
+import argparse
 from pathlib import Path
 
-import argparse
 import py3Dmol
 
 
@@ -17,14 +17,15 @@ def render(view, legend):
             </html>
             """
 
+
 p = argparse.ArgumentParser()
-p.add_argument('file', type = Path)
+p.add_argument('cif', type = Path)
 p.add_argument('-c1', '--chain-a', type = str, default = 'A')
 p.add_argument('-c2', '--chain-b', type = str, default = 'B')
 args = p.parse_args()
 
 SETTINGS = {
-    'mmCIF': Path(args.file),
+    'mmCIF': Path(args.cif),
     'WIDTH': 1600,
     'HEIGHT': 800,
     'COLOR_A': '#4682B4',
