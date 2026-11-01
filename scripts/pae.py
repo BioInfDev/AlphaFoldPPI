@@ -40,8 +40,6 @@ fig.update_layout(
     yaxis_autorange='reversed',
     width=700,
     height=700,
-    template='plotly_white',
-    plot_bgcolor='white',
     xaxis=dict(showgrid=False, zeroline=False),
     yaxis=dict(showgrid=False, zeroline=False)
 )
