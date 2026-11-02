@@ -47,5 +47,5 @@ for i in range(5):
         f'LIS [{args.chain_b}-{args.chain_a}]': AF_ANAL_ROW['LIS'][1][0],
     }
 
-    df_summary = pd.DataFrame([structure_metrics]).to_csv(f'{args.chain_a}-{args.chain_b}_structure_summary_model_{i}.csv', index=False)
-    df_summary = pd.DataFrame([interaction_metrics]).to_csv(f'{args.chain_a}-{args.chain_b}_interaction_summary_model_{i}.csv', index=False)
+    df_summary = pd.DataFrame([structure_metrics]).to_csv(f'{args.chain_a}-{args.chain_b}_structure_metrics_model_{i}.csv', index=False)
+    df_summary = pd.DataFrame([interaction_metrics]).to_csv(f'{args.chain_a}-{args.chain_b}_interaction_metrics_model_{i}.csv', index=False)
