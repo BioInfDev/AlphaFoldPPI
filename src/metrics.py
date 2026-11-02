@@ -1,9 +1,10 @@
+#!/usr/bin/env python3
 import argparse
 import json
 from pathlib import Path
 
 import pandas as pd
-from af_analysis import analysis, docking, Data
+from af_analysis import Data, analysis, docking
 
 
 p = argparse.ArgumentParser()
