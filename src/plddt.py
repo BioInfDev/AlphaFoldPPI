@@ -41,8 +41,8 @@ fig.update_layout(
     title=dict(text='Atom pLDDTs', x=0.5, xanchor='center'),
     xaxis_title='Atom',
     yaxis_title='pLDDT',
-    width=1400,
-    height=700,
+    width=1500,
+    height=600,
     xaxis=dict(showgrid=False, zeroline=False),
     yaxis=dict(showgrid=False, zeroline=False)
 )

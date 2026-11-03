@@ -39,8 +39,8 @@ fig.update_layout(
     xaxis_title='Scored residue',
     yaxis_title='Aligned residue',
     yaxis_autorange='reversed',
-    width=700,
-    height=700,
+    width=600,
+    height=600,
     xaxis=dict(showgrid=False, zeroline=False),
     yaxis=dict(showgrid=False, zeroline=False)
 )

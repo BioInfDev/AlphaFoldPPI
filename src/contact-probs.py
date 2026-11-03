@@ -17,16 +17,16 @@ args = p.parse_args()
 with open(args.json, 'rt') as f:
     data = json.load(f)
 
-pae = np.array(data['contact_probs'], dtype=float)
+contact_probs = np.array(data['contact_probs'], dtype=float)
 chain_ids = data['token_chain_ids']
 bound = chain_ids.index('B')
 
 # PAE plot
 fig = go.Figure(go.Heatmap(
-    z=pae,
+    z=contact_probs,
     colorscale='Greens_r',
     zmin=0,
-    zmax=pae.max(), 
+    zmax=contact_probs.max(), 
     colorbar=dict(orientation='h', y=-0.25, thickness=15),
     hovertemplate='Aligned: %{y}<br>Scored: %{x}<br>Probability: %{z:.1f}<extra></extra>'
 ))
@@ -39,8 +39,8 @@ fig.update_layout(
     xaxis_title='Scored residue',
     yaxis_title='Aligned residue',
     yaxis_autorange='reversed',
-    width=700,
-    height=700,
+    width=600,
+    height=600,
     xaxis=dict(showgrid=False, zeroline=False),
     yaxis=dict(showgrid=False, zeroline=False)
 )

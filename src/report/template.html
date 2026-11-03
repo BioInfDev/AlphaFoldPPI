@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .header-container {
+      width: 1300px;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid #e0e0e0;
+      padding-bottom: 12px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+    
+    .header-bar {
+      width: 4px;
+      height: 42px;
+      background-color: #0066b2;
+      margin-right: 12px;
+    }
+    
+    .header-title {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 26px;
+      font-weight: 500;
+      color: #1c2b46;
+      margin: 0;
+    }
+
+    .content-container {
+      display: flex;
+      width: 1300px;
+      height: 700px;
+      gap: 10px;
+      align-items: stretch;
+    }
+
+    iframe {
+      flex: 1;
+      border: 0;
+    }
+
+    .table-container {
+      width: 1250px;
+      margin-top: 20px;
+      margin-bottom: 20px;
+    }
+
+    .table-container table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 14px;
+      color: #1c2b46;
+    }
+
+    .table-container th,
+    .table-container td {
+      padding: 8px 12px;
+      text-align: left;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .table-container th {
+      background-color: #f5f7fa;
+      font-weight: 500;
+      color: #1c2b46;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header-container">
+    <div class="header-bar"></div>
+    <h2 class="header-title">Structure {{ complex }} (by AlphaFold Server)</h2>
+  </div>
+  <div class="content-container">
+    <iframe srcdoc="{{ chain_render | e }}"></iframe>
+    <iframe srcdoc="{{ pae | e }}"></iframe>
+  </div>
+  <div class="table-container">
+    {{ structure_metrics | safe }}
+  </div>
+
+  <div class="header-container">
+    <div class="header-bar"></div>
+    <h2 class="header-title">Complex metrics</h2>
+  </div>
+  <div class="table-container">
+    {{ interaction_metrics | safe }}
+  </div>
+
+  <div class="header-container">
+    <div class="header-bar"></div>
+    <h2 class="header-title">Contact map</h2>
+  </div>
+  <div class="content-container">
+    <iframe srcdoc="{{ contact_map | e }}"></iframe>
+  </div>
+  <div class="table-container">
+    {{ contacts | safe }}
+  </div>
+</body>
+</html>

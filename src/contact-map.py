@@ -43,7 +43,7 @@ dist_matrix = cdist(coords_A, coords_B)
 contact_pairs = np.where(dist_matrix <= args.threshold)
 point_contacts = np.array(sorted({(res_A[i], res_B[j]) for i, j in zip(*contact_pairs)}), dtype=float)
 
-labels = DBSCAN(eps=5, min_samples=1).fit_predict(point_contacts)
+labels = DBSCAN(eps=50, min_samples=1).fit_predict(point_contacts)
 
 groups = defaultdict(list)
 for (a, b), lab in zip(point_contacts.astype(int), labels):
@@ -51,15 +51,13 @@ for (a, b), lab in zip(point_contacts.astype(int), labels):
 
 contacts = pd.DataFrame([
     {
-        'contact': cid,
-        args.chain_a + '_start': min(p[0] for p in pts),
-        args.chain_a + '_end':   max(p[0] for p in pts),
-        args.chain_b + '_start': min(p[1] for p in pts),
-        args.chain_b + '_end':   max(p[1] for p in pts),
+        "Contact": cid,
+        args.chain_a: f'{min(p[0] for p in pts)}-{max(p[0] for p in pts)}',
+        args.chain_b: f'{min(p[1] for p in pts)}-{max(p[1] for p in pts)}'
     }
     for cid, pts in sorted(groups.items())
 ])
-contacts.to_csv(args.chain_a + '_' + args.chain_b + '_contacts.csv', index = False)
+contacts.to_csv(args.chain_a + '_' + args.chain_b + '_CONTACT_MAP_CONTACTS.csv', index = False)
 
 # Contact map
 fig = go.Figure(go.Scatter(
@@ -77,11 +75,11 @@ fig = go.Figure(go.Scatter(
     hovertemplate=f'{args.chain_a}: %{{x}}<br>{args.chain_b}: %{{y}}<br>Cluster: %{{customdata}}<extra></extra>'
 ))
 fig.update_layout(
-    title=f'{args.chain_a} – {args.chain_b} Contact Map',
+    title=f'{args.chain_a} – {args.chain_b}: Inter-Chain Contact Map (d ≤ 8 Å)',
     xaxis_title=args.chain_a,
     yaxis_title=args.chain_b,
     xaxis=dict(range=[-10, max(res_A) + 10]),
     yaxis=dict(range=[-10, max(res_B) + 10]),
     template='plotly_white'
 )
-fig.write_html(f'{args.chain_a}_{args.chain_b}_contact_map.html')
+fig.write_html(f'{args.chain_a}_{args.chain_b}_CONTACT_MAP.html')

@@ -14,17 +14,20 @@ mkdir "$PWD/AlphaFoldPPI_${CHAIN_A}_${CHAIN_B}" && cd "$PWD/AlphaFoldPPI_${CHAIN
 python3 "$SCRIPTS_DIR/metrics.py" "$FOLD" -c1 "$CHAIN_A" -c2 "$CHAIN_B"
 
 for ((i = 0; i <= 4; i++)); do
-    mkdir -p "model_$i" && cd "model_$i"
-
-    CIF="$FOLD/${FOLD##*/}_model_$i.cif"
-    FULL_DATA="$FOLD/${FOLD##*/}_full_data_$i.json"
-    python3 "$SCRIPTS_DIR/render.py" "$CIF" -c1 "$CHAIN_A" -c2 "$CHAIN_B"
-    python3 "$SCRIPTS_DIR/contact-map.py" "$CIF" -c1 "$CHAIN_A" -c2 "$CHAIN_B"
-    python3 "$SCRIPTS_DIR/pae.py" "$FULL_DATA" -c1 "$CHAIN_A" -c2 "$CHAIN_B"
-    python3 "$SCRIPTS_DIR/contact-probs.py" "$FULL_DATA" -c1 "$CHAIN_A" -c2 "$CHAIN_B"
-    python3 "$SCRIPTS_DIR/plddt.py" "$FULL_DATA" -c1 "$CHAIN_A" -c2 "$CHAIN_B"
-
-    cd ..
-    
-    mv ./*_model_$i*.csv "./model_$i"/
+    mkdir -p "model_$i"
+    (
+        cd "model_$i"
+        CIF="$FOLD/${FOLD##*/}_model_$i.cif"
+        FULL_DATA="$FOLD/${FOLD##*/}_full_data_$i.json"
+        
+        python3 "$SCRIPTS_DIR/render.py"        "$CIF"       -c1 "$CHAIN_A" -c2 "$CHAIN_B"
+        python3 "$SCRIPTS_DIR/contact-map.py"   "$CIF"       -c1 "$CHAIN_A" -c2 "$CHAIN_B"
+        python3 "$SCRIPTS_DIR/pae.py"           "$FULL_DATA" -c1 "$CHAIN_A" -c2 "$CHAIN_B"
+        python3 "$SCRIPTS_DIR/contact-probs.py" "$FULL_DATA" -c1 "$CHAIN_A" -c2 "$CHAIN_B"
+        python3 "$SCRIPTS_DIR/plddt.py"         "$FULL_DATA" -c1 "$CHAIN_A" -c2 "$CHAIN_B"
+        
+        mv ../*_model_$i*.csv ./ 
+        
+        python3 "$SCRIPTS_DIR/report/report.py" . -c1 "$CHAIN_A" -c2 "$CHAIN_B"
+    )
 done

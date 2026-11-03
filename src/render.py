@@ -26,8 +26,8 @@ args = p.parse_args()
 
 OUTPUT_PREFIX = args.chain_a + '_' + args.chain_b
 VIEW = {
-    'WIDTH': 1600,
-    'HEIGHT': 800,
+    'WIDTH': 600,
+    'HEIGHT': 600,
     'COLOR_A': '#4682B4',
     'COLOR_B': '#FF7F50',
 }
