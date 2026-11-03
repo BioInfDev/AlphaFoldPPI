@@ -41,22 +41,28 @@ dist_matrix = cdist(coords_A, coords_B)
 
 # Search for contacts
 contact_pairs = np.where(dist_matrix <= args.threshold)
-point_contacts = np.array(sorted({(res_A[i], res_B[j]) for i, j in zip(*contact_pairs)}), dtype=float)
+point_contacts = np.array(sorted({(res_A[i], res_B[j]) for i, j in zip(*contact_pairs)}), dtype=float).reshape(-1, 2)
 
-labels = DBSCAN(eps=50, min_samples=1).fit_predict(point_contacts)
+if len(point_contacts) == 0:
+    labels = np.empty(0, dtype=int)
+else:
+    labels = DBSCAN(eps=50, min_samples=1).fit_predict(point_contacts)
 
 groups = defaultdict(list)
 for (a, b), lab in zip(point_contacts.astype(int), labels):
     groups[lab].append((a, b))
 
-contacts = pd.DataFrame([
-    {
-        "Contact": cid,
-        args.chain_a: f'{min(p[0] for p in pts)}-{max(p[0] for p in pts)}',
-        args.chain_b: f'{min(p[1] for p in pts)}-{max(p[1] for p in pts)}'
-    }
-    for cid, pts in sorted(groups.items())
-])
+contacts = pd.DataFrame(
+    [
+        {
+            "Contact": cid,
+            args.chain_a: f'{min(p[0] for p in pts)}-{max(p[0] for p in pts)}',
+            args.chain_b: f'{min(p[1] for p in pts)}-{max(p[1] for p in pts)}'
+        }
+        for cid, pts in sorted(groups.items())
+    ],
+    columns=["Contact", args.chain_a, args.chain_b]
+)
 contacts.to_csv(args.chain_a + '_' + args.chain_b + '_CONTACT_MAP_CONTACTS.csv', index = False)
 
 # Contact map
@@ -75,7 +81,7 @@ fig = go.Figure(go.Scatter(
     hovertemplate=f'{args.chain_a}: %{{x}}<br>{args.chain_b}: %{{y}}<br>Cluster: %{{customdata}}<extra></extra>'
 ))
 fig.update_layout(
-    title=f'{args.chain_a} – {args.chain_b}: Inter-Chain Contact Map (d ≤ 8 Å)',
+    title=f'{args.chain_a} – {args.chain_b}: Inter-Chain Contact Map (d ≤ {args.threshold} Å)',
     xaxis_title=args.chain_a,
     yaxis_title=args.chain_b,
     xaxis=dict(range=[-10, max(res_A) + 10]),
